@@ -1,0 +1,157 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/dark_color</item>
+        <item name="android:iconTint" tools:targetApi="o">@color/white</item>
+
+
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/background_Light</item>
+        <item name="colorPrimaryDark">@color/background_Light</item>
+        <item name="colorAccent">#03A9F4</item>
+
+        <item name="settingbackground">@color/light_color</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="icon_a">@drawable/ic_keyboard_backspace_black_24dp</item>
+        <item name="Boder">@color/Boder_Light</item>
+        <item name="Titel_1">@color/Titele_A_Light</item>
+        <item name="Titel_2">@color/Titele_AA_Light</item>
+        <item name="BackgroundColor_S">@color/Background_Light_S</item>
+        <item name="BackgroundColor">@color/background_Light</item>
+        <item name="BackgroundTint">@color/white</item>
+        <item name="dialogtextcolor">@color/dark_color</item>
+        <item name="blue_color_pf">@color/light_color_blue</item>
+        <item name="blue">@color/blue</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+    <style name="AppToolbar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:itemTextAppearance">@style/menu_item_color</item>
+    </style>
+    <style name="menu_item_color">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/background_Night</item>
+
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/background_Night</item>
+        <item name="colorPrimaryDark">@color/background_Night</item>
+        <item name="colorAccent">@color/colorAccent_Night</item>
+        <item name="dialogtextcolor">@color/white</item>
+        <item name="blue_color_pf">@color/Boder_Night</item>
+        <item name="blue">@color/Boder_Night</item>
+        <item name="settingbackground">@color/background_Night</item>
+        <item name="icon_a">@drawable/ic_keyboard_backspace_black_24dp</item>
+        <item name="Boder">@color/Boder_Night</item>
+        <item name="Titel_1">@color/Titele_A_Night</item>
+        <item name="Titel_2">@color/Titele_AA_Night</item>
+        <item name="BackgroundColor_S">@color/Background_Night_S</item>
+        <item name="BackgroundColor">@color/background_Night</item>
+        <item name="BackgroundTint">@color/Boder_Night</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="ThemeDialog" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle_Light</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle_Light</item>
+    </style>
+
+    <style name="ThemeDialog2" parent="@style/ThemeOverlay.AppCompat.Dark">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="NegativeButtonStyle_Light" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="PositiveButtonStyle_Light" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="PFLockScreenStyle">
+        <item name="android:background">@drawable/background_pf</item>
+    </style>
+
+    <style name="PFLockScreenButtonStyle" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/touch_selector_pf</item>
+    </style>
+
+    <style name="PFLockScreenFingerPrintButtonStyle">
+        <item name="android:src">@drawable/fingerprint_lockscreen_pf</item>
+        <item name="android:padding">20dp</item>
+    </style>
+
+    <style name="PFLockScreenDeleteButtonStyle">
+        <item name="android:src">@drawable/delete_lockscreen_pf</item>
+        <item name="android:padding">20dp</item>
+    </style>
+
+
+    <style name="PFCheckBox">
+        <item name="android:checkboxStyle">@style/PFLockScreenCodeStyle</item>
+        <item name="checkboxStyle">@style/PFLockScreenCodeStyle</item>
+    </style>
+
+    <style name="PFLockScreenCodeStyle">
+        <item name="android:button">@drawable/code_selector_pf</item>
+    </style>
+
+    <style name="PFLockScreenNextTextStyle">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:backgroundTint">#0C0A1E</item>
+    </style>
+
+    <style name="PFLockScreenHintTextStyle">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="PFLockScreenTitleTextStyle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="iconTint">@color/white</item>
+        <item name="android:buttonTint">@color/white</item>
+    </style>
+    <style name="MyAppTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="iconTint">@color/white</item>
+        <item name="android:layout_gravity">top</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+    </style>
+
+
+</resources>
