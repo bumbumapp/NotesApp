@@ -566,17 +566,32 @@ public class CreateNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                if (ContextCompat.checkSelfPermission(
-                        getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(
-                            CreateNoteActivity.this,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            REQUST_CODE_STORAGE_PERMISSION
-                    );
-                }else {
-                    selectImage();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                    if (ContextCompat.checkSelfPermission(
+                            getApplicationContext(), Manifest.permission.READ_MEDIA_IMAGES
+                    ) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(
+                                CreateNoteActivity.this,
+                                new String[]{Manifest.permission.READ_MEDIA_IMAGES},
+                                REQUST_CODE_STORAGE_PERMISSION
+                        );
+                    }else {
+                        selectImage();
+                    }
+                }else{
+                    if (ContextCompat.checkSelfPermission(
+                            getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(
+                                CreateNoteActivity.this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                REQUST_CODE_STORAGE_PERMISSION
+                        );
+                    }else {
+                        selectImage();
+                    }
                 }
+
             }
         });
 
@@ -592,17 +607,32 @@ public class CreateNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                if (ContextCompat.checkSelfPermission(
-                        getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(
-                            CreateNoteActivity.this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            REQUST_CODE_STORAGE_PERMISSION
-                    );
-                }else {
-                    showExportDialog();
-                }
+                 if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.TIRAMISU){
+                     if (ContextCompat.checkSelfPermission(
+                             getApplicationContext(), Manifest.permission.READ_MEDIA_IMAGES
+                     ) != PackageManager.PERMISSION_GRANTED) {
+                         ActivityCompat.requestPermissions(
+                                 CreateNoteActivity.this,
+                                 new String[]{Manifest.permission.READ_MEDIA_IMAGES},
+                                 REQUST_CODE_STORAGE_PERMISSION
+                         );
+                     } else {
+                         showExportDialog();
+                     }
+
+                 }else {
+                     if (ContextCompat.checkSelfPermission(
+                             getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE
+                     ) != PackageManager.PERMISSION_GRANTED) {
+                         ActivityCompat.requestPermissions(
+                                 CreateNoteActivity.this,
+                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                 REQUST_CODE_STORAGE_PERMISSION
+                         );
+                     } else {
+                         showExportDialog();
+                     }
+                 }
             }
         });
 

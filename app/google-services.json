@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1005457911497",
+    "project_id": "notes-b6b92",
+    "storage_bucket": "notes-b6b92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005457911497:android:1f3ae93e367911c3db6718",
+        "android_client_info": {
+          "package_name": "com.bumbumapps.notes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1005457911497-ech70jdm71vl06hgsdbgl38lp1ug0ulg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6yTzss-kBKaub8Wtzs8gSI0YKtwcCAbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1005457911497-ech70jdm71vl06hgsdbgl38lp1ug0ulg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

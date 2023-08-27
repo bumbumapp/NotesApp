@@ -1,5 +1,7 @@
 package com.bumbumapps.mynotes.Activity;
 
+import static com.bumbumapps.mynotes.AdsLoader.mInterstitialAd;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -35,9 +37,12 @@ import java.util.concurrent.TimeUnit;
 
 import com.bumbumapps.mynotes.Activity.Note.CreateNoteActivity;
 import com.bumbumapps.mynotes.Activity.Setting.SettingActivity;
+import com.bumbumapps.mynotes.AdsLoader;
+import com.bumbumapps.mynotes.Globals;
 import com.bumbumapps.mynotes.Methods.Methods;
 import com.bumbumapps.mynotes.R;
 import com.bumbumapps.mynotes.SharedPref.Setting;
+import com.bumbumapps.mynotes.Timers;
 import com.bumbumapps.mynotes.adapters.NoteAdapter;
 import com.bumbumapps.mynotes.database.DeleteDatabase;
 import com.bumbumapps.mynotes.database.NotesDatabase;
@@ -67,7 +72,6 @@ public class MainActivity extends AppCompatActivity{
     private int noteClickedPostion = -1;
     AlertDialog dialogDeletNote;
     private AdView adView;
-    private InterstitialAd mInterstitialAd;
     final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     @Override
@@ -87,7 +91,6 @@ public class MainActivity extends AppCompatActivity{
         relativeLayout=findViewById(R.id.realtiv);
         adView=findViewById(R.id.adView);
         loadbannerads();
-        scheduleInterstitial();
         if (Setting.Dark_Mode ) {
             findViewById(R.id.layoutSearch).setBackgroundResource(R.drawable.blacksearch_bacground);
             toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.background_Night));
@@ -299,46 +302,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-
-
-    private void setUpInterstitialAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        InterstitialAd.load(this,"ca-app-pub-8444865753152507/8521044739", adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
-                        mInterstitialAd = interstitialAd;
-                        Log.i("TAG", "onAdLoaded");
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
-                        Log.i("TAG", loadAdError.getMessage());
-                        mInterstitialAd = null;
-                    }
-                });
-    }
-    private void scheduleInterstitial() {
-        scheduler.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        setUpInterstitialAd();
-                    }
-                });
-
-            }
-        }, 1, 3, TimeUnit.MINUTES);
-
-    }
     private void loadbannerads() {
         adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -346,7 +309,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void OnClick(View view) {
-        if (mInterstitialAd != null) {
+        if (mInterstitialAd != null && Globals.TIMER_FINISHED) {
             mInterstitialAd.show(this);
             mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
                 @Override
@@ -355,6 +318,9 @@ public class MainActivity extends AppCompatActivity{
                             new Intent(MainActivity.this, CreateNoteActivity.class),
                             REQUEST_CODE_ADD_NOTE
                     );
+                    Globals.TIMER_FINISHED = false;
+                    Timers.timer().start();
+                    AdsLoader.loadInterstitial(getBaseContext());
                     Log.d("TAG", "The ad was dismissed.");
                 }
 

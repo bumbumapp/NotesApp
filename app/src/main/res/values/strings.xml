@@ -105,4 +105,5 @@
     <string name="language">Language</string>
     <string name="high_security">High security</string>
     <string name="delete_noted">Deleted notes</string>
+    <string name="interstitial_id">ca-app-pub-8444865753152507/8521044739</string>
 </resources>
