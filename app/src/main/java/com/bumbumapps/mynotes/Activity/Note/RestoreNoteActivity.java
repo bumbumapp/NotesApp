@@ -206,10 +206,7 @@ public class RestoreNoteActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        if (intent.resolveActivity(getPackageManager()) != null){
-            startActivityForResult(intent, REQUST_CODE_SELECT_IMAGE);
-        }
+        startActivityForResult(com.bumbumapps.mynotes.Methods.NoteFiles.pickImageIntent(this), REQUST_CODE_SELECT_IMAGE);
     }
 
     @Override
@@ -239,7 +236,8 @@ public class RestoreNoteActivity extends AppCompatActivity {
                         imageNote.setVisibility(View.VISIBLE);
                         findViewById(R.id.reatore_imageRemoveImage).setVisibility(View.VISIBLE);
 
-                        setectedImagePath = getPathFromUri(selectedImageUri);
+                        String copied = com.bumbumapps.mynotes.Methods.NoteFiles.copyToAppStorage(this, selectedImageUri);
+                        setectedImagePath = copied != null ? copied : "";
 
                     } catch (Exception e) {
                         e.printStackTrace();

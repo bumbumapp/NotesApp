@@ -1,6 +1,5 @@
 package com.bumbumapps.mynotes.Activity;
 
-import static com.bumbumapps.mynotes.AdsLoader.mInterstitialAd;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -37,23 +36,16 @@ import java.util.concurrent.TimeUnit;
 
 import com.bumbumapps.mynotes.Activity.Note.CreateNoteActivity;
 import com.bumbumapps.mynotes.Activity.Setting.SettingActivity;
-import com.bumbumapps.mynotes.AdsLoader;
-import com.bumbumapps.mynotes.Globals;
+import com.bumbumapps.mynotes.AdsHelper;
 import com.bumbumapps.mynotes.Methods.Methods;
 import com.bumbumapps.mynotes.R;
 import com.bumbumapps.mynotes.SharedPref.Setting;
-import com.bumbumapps.mynotes.Timers;
 import com.bumbumapps.mynotes.adapters.NoteAdapter;
 import com.bumbumapps.mynotes.database.DeleteDatabase;
 import com.bumbumapps.mynotes.database.NotesDatabase;
 import com.bumbumapps.mynotes.entities.Note;
 import com.bumbumapps.mynotes.listeners.InterAdListener;
 import com.bumbumapps.mynotes.listeners.NotesListener;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
@@ -71,7 +63,6 @@ public class MainActivity extends AppCompatActivity{
     private ImageButton settingbutton;
     private int noteClickedPostion = -1;
     AlertDialog dialogDeletNote;
-    private AdView adView;
     final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     @Override
@@ -89,7 +80,6 @@ public class MainActivity extends AppCompatActivity{
 //        setTitle(R.string.app_name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         relativeLayout=findViewById(R.id.realtiv);
-        adView=findViewById(R.id.adView);
         loadbannerads();
         if (Setting.Dark_Mode ) {
             findViewById(R.id.layoutSearch).setBackgroundResource(R.drawable.blacksearch_bacground);
@@ -303,49 +293,19 @@ public class MainActivity extends AppCompatActivity{
 
 
     private void loadbannerads() {
-        adView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        // UMP consent first; Mobile Ads starts and requests ads only after canRequestAds().
+        final android.view.ViewGroup container = findViewById(R.id.adView);
+        AdsHelper.gatherConsent(this, () -> {
+            AdsHelper.loadBanner(this, container, getString(R.string.banner_id));
+            AdsHelper.preloadInterstitial(this, getString(R.string.interstitial_id));
+        });
     }
 
     public void OnClick(View view) {
-        if (mInterstitialAd != null && Globals.TIMER_FINISHED) {
-            mInterstitialAd.show(this);
-            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
-                @Override
-                public void onAdDismissedFullScreenContent() {
-                    startActivityForResult(
-                            new Intent(MainActivity.this, CreateNoteActivity.class),
-                            REQUEST_CODE_ADD_NOTE
-                    );
-                    Globals.TIMER_FINISHED = false;
-                    Timers.timer().start();
-                    AdsLoader.loadInterstitial(getBaseContext());
-                    Log.d("TAG", "The ad was dismissed.");
-                }
-
-                @Override
-                public void onAdFailedToShowFullScreenContent(AdError adError) {
-                    // Called when fullscreen content failed to show.
-                    Log.d("TAG", "The ad failed to show.");
-                }
-
-                @Override
-                public void onAdShowedFullScreenContent() {
-                    // Called when fullscreen content is shown.
-                    // Make sure to set your reference to null so you don't
-                    // show it a second time.
-                    mInterstitialAd = null;
-                    Log.d("TAG", "The ad was shown.");
-                }
-            });
-        }
-        else{
-            startActivityForResult(
-                    new Intent(getApplicationContext(), CreateNoteActivity.class),
-                    REQUEST_CODE_ADD_NOTE
-            );
-        }
-
+        // Capped interstitial (60 s) before opening the editor, then continue.
+        AdsHelper.showInterstitialIfReady(this, getString(R.string.interstitial_id), () -> startActivityForResult(
+                new Intent(getApplicationContext(), CreateNoteActivity.class),
+                REQUEST_CODE_ADD_NOTE
+        ));
     }
 }

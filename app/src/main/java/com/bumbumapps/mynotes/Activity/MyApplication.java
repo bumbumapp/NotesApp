@@ -7,8 +7,6 @@ import android.os.StrictMode;
 import androidx.multidex.MultiDex;
 
 
-import com.bumbumapps.mynotes.AdsLoader;
-import com.google.android.gms.ads.MobileAds;
 
 import com.bumbumapps.mynotes.R;
 import com.bumbumapps.mynotes.SharedPref.Setting;
@@ -29,7 +27,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-        AdsLoader.loadInterstitial(getApplicationContext());
+        registerActivityLifecycleCallbacks(new com.bumbumapps.mynotes.EdgeToEdgeCallbacks());
         sharedPref = new SharedPref(this);
         if (sharedPref.getNightMode()) {
             Setting.Dark_Mode = true;

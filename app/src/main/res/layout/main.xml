@@ -100,15 +100,12 @@
         />
 
 
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
+    <!-- Anchored adaptive banner is added here by AdsHelper after consent. -->
+    <FrameLayout
         android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        ads:adSize="FULL_BANNER"
-        ads:layout_constraintBottom_toBottomOf="parent"
-        ads:adUnitId="ca-app-pub-8444865753152507/8767977814">
-    </com.google.android.gms.ads.AdView>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

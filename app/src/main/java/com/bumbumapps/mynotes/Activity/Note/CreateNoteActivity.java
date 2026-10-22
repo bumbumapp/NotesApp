@@ -56,6 +56,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import com.bumbumapps.mynotes.Methods.Methods;
+import com.bumbumapps.mynotes.Methods.NoteFiles;
 import com.bumbumapps.mynotes.R;
 import com.bumbumapps.mynotes.SharedPref.Setting;
 import com.bumbumapps.mynotes.database.DeleteDatabase;
@@ -566,32 +567,8 @@ public class CreateNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                    if (ContextCompat.checkSelfPermission(
-                            getApplicationContext(), Manifest.permission.READ_MEDIA_IMAGES
-                    ) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(
-                                CreateNoteActivity.this,
-                                new String[]{Manifest.permission.READ_MEDIA_IMAGES},
-                                REQUST_CODE_STORAGE_PERMISSION
-                        );
-                    }else {
-                        selectImage();
-                    }
-                }else{
-                    if (ContextCompat.checkSelfPermission(
-                            getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
-                    ) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(
-                                CreateNoteActivity.this,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                REQUST_CODE_STORAGE_PERMISSION
-                        );
-                    }else {
-                        selectImage();
-                    }
-                }
-
+                // System photo picker: no storage permission needed.
+                selectImage();
             }
         });
 
@@ -607,32 +584,17 @@ public class CreateNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                 if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.TIRAMISU){
-                     if (ContextCompat.checkSelfPermission(
-                             getApplicationContext(), Manifest.permission.READ_MEDIA_IMAGES
-                     ) != PackageManager.PERMISSION_GRANTED) {
-                         ActivityCompat.requestPermissions(
-                                 CreateNoteActivity.this,
-                                 new String[]{Manifest.permission.READ_MEDIA_IMAGES},
-                                 REQUST_CODE_STORAGE_PERMISSION
-                         );
-                     } else {
-                         showExportDialog();
-                     }
-
-                 }else {
-                     if (ContextCompat.checkSelfPermission(
-                             getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE
-                     ) != PackageManager.PERMISSION_GRANTED) {
-                         ActivityCompat.requestPermissions(
-                                 CreateNoteActivity.this,
-                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                 REQUST_CODE_STORAGE_PERMISSION
-                         );
-                     } else {
-                         showExportDialog();
-                     }
-                 }
+                if (NoteFiles.needsLegacyWritePermission() && ContextCompat.checkSelfPermission(
+                        getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                            CreateNoteActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUST_CODE_STORAGE_PERMISSION
+                    );
+                } else {
+                    showExportDialog();
+                }
             }
         });
 
@@ -724,54 +686,29 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     private void saveImageToExternalStorage(Bitmap finalBitmap) {
-        String iconsStoragePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name);
-        File sdIconStorageDir = new File(iconsStoragePath);
-        if (!sdIconStorageDir.exists()) {
-            sdIconStorageDir.mkdir();
-        }
         generator = generatorNumber();
         String fname = "Image_" + generator + ".jpg";
-        File file = new File(sdIconStorageDir, fname);
-
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-            Toast.makeText(this, "Image is created!!!", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
+        Uri uri = NoteFiles.saveToDownloads(this, NoteFiles.exportFolder(getString(R.string.app_name)), fname,
+                "image/jpeg", os -> finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, os));
+        if (uri == null) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            return;
         }
-
-        // Tell the media scanner about the new file so that it is
-        // immediately available to the user.
-        MediaScannerConnection.scanFile(this, new String[] { file.toString() }, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
-                    public void onScanCompleted(String path, Uri uri) {
-                        Log.i("ExternalStorage", "Scanned " + path + ":");
-                        Log.i("ExternalStorage", "-> uri=" + uri);
-                    }
-                });
-
-        openGeneratedJPG();
+        Toast.makeText(this, "Image is created!!!", Toast.LENGTH_SHORT).show();
+        openGeneratedJPG(uri);
     }
 
-    private void openGeneratedJPG(){
-        String iconsStoragePath = MediaStore.Images.Media.RELATIVE_PATH + "/" + getString(R.string.app_name);
-        File sdIconStorageDir = new File(iconsStoragePath);
-        if (sdIconStorageDir.exists()) {
-            String fname = "Image_" + generator + ".jpg";
-            File file = new File(sdIconStorageDir, fname);
-            Intent intent=new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.fromFile(file);
-            intent.setDataAndType(uri, "image/*");
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            try {
-                startActivity(intent);
-            } catch(ActivityNotFoundException e) {
-                Toast.makeText(CreateNoteActivity.this, "No Application available to view JPG", Toast.LENGTH_LONG).show();
-            }
+    private void openGeneratedJPG(Uri uri) {
+        if (!"content".equals(uri.getScheme())) {
+            return; // file:// Uris cannot be shared with other apps (API 24+)
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "image/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(CreateNoteActivity.this, "No Application available to view JPG", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -856,10 +793,11 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.select_image)), REQUST_CODE_SELECT_IMAGE);
+        try {
+            startActivityForResult(NoteFiles.pickImageIntent(this), REQUST_CODE_SELECT_IMAGE);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.select_image, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -867,6 +805,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUST_CODE_STORAGE_PERMISSION && grantResults.length > 0){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                showExportDialog();
             }else {
                 Toast.makeText(this,"Permissions Denied!",Toast.LENGTH_SHORT).show();
             }
@@ -881,12 +820,14 @@ public class CreateNoteActivity extends AppCompatActivity {
                 Uri selectedImageUri = data.getData();
                 if (selectedImageUri != null){
                     try {
-                        InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
-                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        // Keep a private copy: picker Uris are temporary and have no file path.
+                        String path = NoteFiles.copyToAppStorage(this, selectedImageUri);
+                        if (path == null) throw new IllegalStateException("Cannot read image");
+                        Bitmap bitmap = BitmapFactory.decodeFile(path);
                         imageNote.setImageBitmap(bitmap);
                         imageNote.setVisibility(View.VISIBLE);
                         findViewById(R.id.create_imageRemoveImage).setVisibility(View.VISIBLE);
-                        setectedImagePath = getPathFromUri(selectedImageUri);
+                        setectedImagePath = path;
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -1139,27 +1080,16 @@ public class CreateNoteActivity extends AppCompatActivity {
                 +"\n"
                 +textNote;
 
-        String iconsStoragePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + getString(R.string.app_name);
-        File sdIconStorageDir = new File(iconsStoragePath);
-        if (!sdIconStorageDir.exists()) {
-            sdIconStorageDir.mkdir();
-        }
         generator = generatorNumber();
         String fname = "notes_" + generator + ".txt";
-        File file = new File(sdIconStorageDir, fname);
-
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            out.write(text.getBytes());
-            nemosoftsEditText.getText().clear();
-            out.flush();
-            out.close();
+        final byte[] bytes = text.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        Uri uri = NoteFiles.saveToDownloads(this, NoteFiles.exportFolder(getString(R.string.app_name)), fname,
+                "text/plain", os -> os.write(bytes));
+        if (uri != null) {
             Toast.makeText(this, "File saved", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
         }
-
     }
 
 
