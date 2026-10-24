@@ -33,9 +33,7 @@ import androidx.core.content.ContextCompat;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import com.bumbumapps.mynotes.Methods.NoteDateFormat;
 
 import com.bumbumapps.mynotes.Methods.Methods;
 import com.bumbumapps.mynotes.R;
@@ -115,10 +113,7 @@ public class RestoreNoteActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        textDeteTime.setText(
-                new SimpleDateFormat("EEEE , dd MMMM yyyy HH:mm a", Locale.getDefault())
-                .format(new Date())
-        );
+        textDeteTime.setText(NoteDateFormat.now(this));
 
         setectedNoteColor = "#333333";
         setectedImagePath = "";

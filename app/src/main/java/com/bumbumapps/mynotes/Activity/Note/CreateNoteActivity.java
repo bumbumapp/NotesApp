@@ -50,9 +50,7 @@ import com.bumbumapps.mynotes.view.NemosoftsText.NemosoftsEditText;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import com.bumbumapps.mynotes.Methods.NoteDateFormat;
 import java.util.Random;
 
 import com.bumbumapps.mynotes.Methods.Methods;
@@ -147,10 +145,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         nemosoftsEditText.setSelection(nemosoftsEditText.getEditableText().length());
 
-        textDeteTime.setText(
-                new SimpleDateFormat("EEEE , dd MMMM yyyy HH:mm a", Locale.getDefault())
-                .format(new Date())
-        );
+        textDeteTime.setText(NoteDateFormat.now(this));
 
         setectedNoteColor = "#333333";
         setectedImagePath = "";
