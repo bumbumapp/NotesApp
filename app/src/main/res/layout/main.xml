@@ -10,6 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         app:title="My Notes"
         app:titleTextColor="?attr/BackgroundTint"
+        app:titleTextAppearance="@style/NotesTitle"
         android:id="@+id/toolbar_home"
         android:layout_width="match_parent"
         android:theme="@style/ToolbarColoredBackArrow"
@@ -85,16 +86,18 @@
 
     <ImageView
         android:id="@+id/imageAddNoteMain"
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_width="@dimen/_48sdp"
+        android:layout_height="@dimen/_48sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
         android:layout_marginBottom="@dimen/_15sdp"
         android:background="@drawable/background_add_button"
         android:contentDescription="@string/app_name"
-        android:padding="@dimen/_5sdp"
+        android:padding="@dimen/_9sdp"
         android:onClick="OnClick"
+        android:stateListAnimator="@animator/press_scale"
+        android:elevation="6dp"
         android:src="@drawable/ic_add"
-        app:tint="@color/colorWhite"
+        app:tint="@color/dark_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         />

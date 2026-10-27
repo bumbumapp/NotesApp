@@ -2,7 +2,7 @@
 <resources>
 
     <!--Light Mode Color-->
-    <color name="colorAccent_Light">#F50057</color>
+    <color name="colorAccent_Light">#F5B83D</color>
     <color name="background_Light">@color/dark_color</color>
     <color name="Background_Light_S">@color/light_color</color>
     <color name="Titele_A_Light">@color/white</color>
@@ -11,20 +11,20 @@
 
 
     <!--Night Mode Color-->
-    <color name="colorAccent_Night">#F50057</color>
+    <color name="colorAccent_Night">#F5B83D</color>
     <color name="background_Night">#000000</color>
-    <color name="Background_Night_S">#121212</color>
+    <color name="Background_Night_S">#141518</color>
     <color name="Titele_A_Night">#DBDBDB</color>
     <color name="Titele_AA_Night">#E9A0A0A0</color>
-    <color name="Boder_Night">#191919</color>
+    <color name="Boder_Night">#1C1E23</color>
 
 
 
     <color name="blue_500">#FF2196F3</color>
-    <color name="teal_200">#FDBE3B</color>
+    <color name="teal_200">#F5B83D</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorTextHint">#7B7B7B</color>
-    <color name="colorDefaultNoteColor">#333333</color>
+    <color name="colorDefaultNoteColor">#23262D</color>
     <color name="colorNoteSubTitleText">#Fafafa</color>
     <color name="colorNoteColor2">#fdbe3b</color>
     <color name="colorNoteColor3">#E040FB</color>
@@ -42,9 +42,9 @@
     <color name="hint_color">#42000000</color>
     <color name="warning_color">#f4511e</color>
     <color name="success_color">#009688</color>
-    <color name="dark_color">#221F35</color>
+    <color name="dark_color">#131418</color>
     <color name="white">#FFFFFF</color>
-    <color name="light_color">#373553</color>
-    <color name="blue">#333157</color>
-    <color name="light_color_blue">#29263C</color>
+    <color name="light_color">#1F2128</color>
+    <color name="blue">#272A32</color>
+    <color name="light_color_blue">#191B20</color>
 </resources>
