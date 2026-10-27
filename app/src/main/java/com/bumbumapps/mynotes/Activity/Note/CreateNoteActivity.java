@@ -778,7 +778,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 if (Setting.Dark_Mode){
                     gradientDrawable.setColor(Color.parseColor("#ECECEC"));
                 }else {
-                    gradientDrawable.setColor(Color.parseColor("#121212"));
+                    gradientDrawable.setColor(Color.parseColor("#F5B83D"));
                 }
                 break;
             default:
