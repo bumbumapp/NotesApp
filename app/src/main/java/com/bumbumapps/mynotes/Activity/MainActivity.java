@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void OnClick(View view) {
-        // Capped interstitial (60 s) before opening the editor, then continue.
+        // Capped interstitial (AdsHelper: 15 min) before opening the editor, then continue.
         AdsHelper.showInterstitialIfReady(this, getString(R.string.interstitial_id), () -> startActivityForResult(
                 new Intent(getApplicationContext(), CreateNoteActivity.class),
                 REQUEST_CODE_ADD_NOTE
