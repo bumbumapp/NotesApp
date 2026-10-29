@@ -49,4 +49,6 @@
     <color name="light_color_blue">#F3F4F8</color>
     <color name="bento_text">#0E1222</color>
     <color name="bento_muted">#5B6275</color>
+    <!-- PIN keys sit on the always-dark lock screen -->
+    <color name="pf_key">#272A32</color>
 </resources>

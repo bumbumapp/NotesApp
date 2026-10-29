@@ -10,8 +10,8 @@ android {
         applicationId "com.bumbumapps.notes"
         minSdk 24
         targetSdk 36
-        versionCode 9
-        versionName "1.4.0"
+        versionCode 10
+        versionName "1.4.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
