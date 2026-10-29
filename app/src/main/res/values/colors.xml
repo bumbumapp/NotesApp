@@ -3,11 +3,11 @@
 
     <!--Light Mode Color-->
     <color name="colorAccent_Light">#F5B83D</color>
-    <color name="background_Light">@color/dark_color</color>
-    <color name="Background_Light_S">@color/light_color</color>
-    <color name="Titele_A_Light">@color/white</color>
-    <color name="Titele_AA_Light">#B3ffffff</color>
-    <color name="Boder_Light">@color/white</color>
+    <color name="background_Light">#F3F4F8</color>
+    <color name="Background_Light_S">#FFFFFF</color>
+    <color name="Titele_A_Light">#0E1222</color>
+    <color name="Titele_AA_Light">#5B6275</color>
+    <color name="Boder_Light">#ECEDF3</color>
 
 
     <!--Night Mode Color-->
@@ -24,7 +24,7 @@
     <color name="teal_200">#F5B83D</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorTextHint">#7B7B7B</color>
-    <color name="colorDefaultNoteColor">#23262D</color>
+    <color name="colorDefaultNoteColor">#FFFFFF</color>
     <color name="colorNoteSubTitleText">#Fafafa</color>
     <color name="colorNoteColor2">#fdbe3b</color>
     <color name="colorNoteColor3">#E040FB</color>
@@ -44,7 +44,9 @@
     <color name="success_color">#009688</color>
     <color name="dark_color">#131418</color>
     <color name="white">#FFFFFF</color>
-    <color name="light_color">#1F2128</color>
-    <color name="blue">#272A32</color>
-    <color name="light_color_blue">#191B20</color>
+    <color name="light_color">#F3F4F8</color>
+    <color name="blue">#FFFFFF</color>
+    <color name="light_color_blue">#F3F4F8</color>
+    <color name="bento_text">#0E1222</color>
+    <color name="bento_muted">#5B6275</color>
 </resources>

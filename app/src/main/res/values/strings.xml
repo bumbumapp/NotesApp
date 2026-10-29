@@ -105,4 +105,9 @@
     <string name="language">Language</string>
     <string name="high_security">High security</string>
     <string name="delete_noted">Deleted notes</string>
+    <string name="bento_home_title">My notes</string>
+    <string name="bento_settings">Settings</string>
+    <string name="bento_greeting_morning">Good morning</string>
+    <string name="bento_greeting_afternoon">Good afternoon</string>
+    <string name="bento_greeting_evening">Good evening</string>
 </resources>

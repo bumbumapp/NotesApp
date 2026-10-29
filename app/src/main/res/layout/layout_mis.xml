@@ -193,7 +193,7 @@
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
             android:src="@drawable/ic_add_image"
-            app:tint="@color/white"
+            app:tint="?attr/Titel_1"
             android:contentDescription="@string/todo" />
 
         <TextView
@@ -202,7 +202,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:includeFontPadding="false"
             android:text="@string/add_image"
-            android:textColor="@color/white"
+            android:textColor="?attr/Titel_1"
             android:textSize="@dimen/_12ssp"/>
 
     </LinearLayout>
@@ -222,7 +222,7 @@
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
             android:src="@drawable/ic_web"
-            app:tint="@color/white"
+            app:tint="?attr/Titel_1"
             android:contentDescription="@string/todo" />
 
         <TextView
@@ -231,7 +231,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:includeFontPadding="false"
             android:text="@string/add_url"
-            android:textColor="@color/white"
+            android:textColor="?attr/Titel_1"
             android:textSize="@dimen/_12ssp"/>
 
     </LinearLayout>
@@ -251,7 +251,7 @@
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
             android:src="@drawable/ic_export_file"
-            app:tint="@color/white"
+            app:tint="?attr/Titel_1"
             android:contentDescription="@string/todo" />
 
         <TextView
@@ -260,7 +260,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:includeFontPadding="false"
             android:text="@string/export"
-            android:textColor="@color/white"
+            android:textColor="?attr/Titel_1"
             android:textSize="@dimen/_12ssp"/>
 
     </LinearLayout>
@@ -280,7 +280,7 @@
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
             android:src="@drawable/ic_share"
-            app:tint="@color/white"
+            app:tint="?attr/Titel_1"
             android:contentDescription="@string/todo" />
 
         <TextView
@@ -289,7 +289,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:includeFontPadding="false"
             android:text="@string/share"
-            android:textColor="@color/white"
+            android:textColor="?attr/Titel_1"
             android:textSize="@dimen/_12ssp"/>
 
     </LinearLayout>
@@ -310,7 +310,7 @@
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
             android:src="@drawable/ic_delete"
-            app:tint="@color/white"
+            app:tint="?attr/Titel_1"
             android:contentDescription="@string/todo" />
 
         <TextView
@@ -319,7 +319,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:includeFontPadding="false"
             android:text="@string/delete_note"
-            android:textColor="@color/white"
+            android:textColor="?attr/Titel_1"
             android:textSize="@dimen/_12ssp"/>
 
     </LinearLayout>
@@ -330,7 +330,7 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:text="@string/app_name"
-        android:textColor="@color/white"
+        android:textColor="?attr/Titel_1"
         android:textSize="@dimen/_13ssp"/>
 
 

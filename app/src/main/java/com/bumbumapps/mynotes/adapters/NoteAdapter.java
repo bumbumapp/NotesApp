@@ -105,10 +105,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                         holder.textSubtitle.setTextColor(Color.parseColor("#6D6D6D"));
                         holder.textDateTime.setTextColor(Color.parseColor("#6D6D6D"));
                     }else {
-                        gradientDrawable.setColor(Color.parseColor("#23262D"));
-                        holder.textTitle.setTextColor(Color.parseColor("#F2F3F5"));
-                        holder.textSubtitle.setTextColor(Color.parseColor("#E9A0A0A0"));
-                        holder.textDateTime.setTextColor(Color.parseColor("#E9A0A0A0"));
+                        // Bento light: default notes are white cards with dark text.
+                        gradientDrawable.setColor(Color.WHITE);
+                        holder.textTitle.setTextColor(Color.parseColor("#0E1222"));
+                        holder.textSubtitle.setTextColor(Color.parseColor("#5B6275"));
+                        holder.textDateTime.setTextColor(Color.parseColor("#5B6275"));
                     }
                     break;
                 default:
@@ -122,10 +123,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 holder.textSubtitle.setTextColor(Color.parseColor("#6D6D6D"));
                 holder.textDateTime.setTextColor(Color.parseColor("#6D6D6D"));
             }else {
-                gradientDrawable.setColor(Color.parseColor("#121212"));
-                holder.textTitle.setTextColor(Color.parseColor("#DBDBDB"));
-                holder.textSubtitle.setTextColor(Color.parseColor("#E9A0A0A0"));
-                holder.textDateTime.setTextColor(Color.parseColor("#E9A0A0A0"));
+                gradientDrawable.setColor(Color.WHITE);
+                holder.textTitle.setTextColor(Color.parseColor("#0E1222"));
+                holder.textSubtitle.setTextColor(Color.parseColor("#5B6275"));
+                holder.textDateTime.setTextColor(Color.parseColor("#5B6275"));
             }
         }
 

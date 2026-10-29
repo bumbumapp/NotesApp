@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity{
         inputSearch = findViewById(R.id.inputSearch);
 //        setTitle(R.string.app_name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        int hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
+        ((android.widget.TextView) findViewById(R.id.textGreeting)).setText(hour >= 5 && hour < 12
+                ? R.string.bento_greeting_morning : hour >= 12 && hour < 18
+                ? R.string.bento_greeting_afternoon : R.string.bento_greeting_evening);
         relativeLayout=findViewById(R.id.realtiv);
         loadbannerads();
         if (Setting.Dark_Mode ) {

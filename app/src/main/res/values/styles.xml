@@ -2,17 +2,18 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/dark_color</item>
-        <item name="android:iconTint" tools:targetApi="o">@color/white</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:navigationBarColor">@color/background_Light</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/background_Light</item>
+        <item name="android:iconTint" tools:targetApi="o">@color/bento_text</item>
 
 
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/background_Light</item>
         <item name="colorPrimaryDark">@color/background_Light</item>
         <item name="colorAccent">@color/teal_200</item>
-        <item name="android:fontFamily">@font/manrope</item>
-        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/jakarta</item>
 
         <item name="settingbackground">@color/light_color</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -22,7 +23,7 @@
         <item name="Titel_2">@color/Titele_AA_Light</item>
         <item name="BackgroundColor_S">@color/Background_Light_S</item>
         <item name="BackgroundColor">@color/background_Light</item>
-        <item name="BackgroundTint">@color/white</item>
+        <item name="BackgroundTint">@color/bento_text</item>
         <item name="dialogtextcolor">@color/dark_color</item>
         <item name="blue_color_pf">@color/light_color_blue</item>
         <item name="blue">@color/blue</item>
@@ -45,8 +46,7 @@
         <item name="colorPrimary">@color/background_Night</item>
         <item name="colorPrimaryDark">@color/background_Night</item>
         <item name="colorAccent">@color/colorAccent_Night</item>
-        <item name="android:fontFamily">@font/manrope</item>
-        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/jakarta</item>
         <item name="dialogtextcolor">@color/white</item>
         <item name="blue_color_pf">@color/Boder_Night</item>
         <item name="blue">@color/Boder_Night</item>
@@ -64,7 +64,7 @@
 
     <!-- Large toolbar title for the notes list (2026 redesign). -->
     <style name="NotesTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="android:fontFamily">@font/jakarta_extrabold</item>
         <item name="android:textSize">26sp</item>
         <item name="android:letterSpacing">-0.02</item>
     </style>
@@ -148,12 +148,14 @@
         <item name="android:textSize">18sp</item>
         <item name="android:gravity">center</item>
     </style>
-    <style name="ToolbarColoredBackArrow" parent="AppTheme">
-        <item name="android:textColorSecondary">@color/white</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="iconTint">@color/white</item>
-        <item name="android:buttonTint">@color/white</item>
+    <!-- Overlay without a parent so the activity theme (light or dark) supplies Titel_1. -->
+    <style name="ToolbarColoredBackArrow" parent="">
+        <item name="android:textColorSecondary">?attr/Titel_1</item>
+        <item name="android:textColor">?attr/Titel_1</item>
+        <item name="android:textColorPrimary">?attr/Titel_1</item>
+        <item name="iconTint">?attr/Titel_1</item>
+        <item name="android:buttonTint">?attr/Titel_1</item>
+        <item name="colorControlNormal">?attr/Titel_1</item>
     </style>
     <style name="MyAppTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:textColor">@color/white</item>

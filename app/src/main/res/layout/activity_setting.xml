@@ -12,7 +12,7 @@
         android:background="?attr/BackgroundColor"
         android:id="@+id/toolbar_setting"
         android:layout_width="match_parent"
-        app:titleTextColor="@color/white"
+        app:titleTextColor="?attr/Titel_1"
         app:navigationIcon="?attr/icon_a"
         app:title="@string/settings"
         android:layout_marginBottom="10dp"

@@ -20,7 +20,7 @@
             android:background="@color/dark_color"
             android:minHeight="?attr/actionBarSize"
             app:navigationIcon="?attr/icon_a"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="?attr/Titel_1" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/deleteRecyclerView"

@@ -22,7 +22,7 @@
 
             <androidx.appcompat.widget.Toolbar
                 app:title="@string/app_name"
-                app:titleTextColor="@color/white"
+                app:titleTextColor="?attr/Titel_1"
                 app:navigationIcon="?attr/icon_a"
                 android:id="@+id/create_toolbar_note"
                 android:layout_width="match_parent"
@@ -58,8 +58,8 @@
                     android:includeFontPadding="false"
                     android:inputType="text"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textColorHint="#B3FFFFFF"
+                    android:textColor="?attr/Titel_1"
+                    android:textColorHint="?attr/Titel_2"
                     android:textSize="@dimen/_16ssp"
                     tools:ignore="MissingConstraints" />
 
@@ -89,8 +89,8 @@
                     android:inputType="textMultiLine"
                     android:paddingTop="@dimen/_8sdp"
                     android:paddingBottom="@dimen/_8sdp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#B3FFFFFF"
+                    android:textColor="?attr/Titel_1"
+                    android:textColorHint="?attr/Titel_2"
                     android:textSize="@dimen/_13ssp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/create_viewSubtitleIndicator"
@@ -188,8 +188,8 @@
                     app:bulletGapWidth="@dimen/bullet_gap_width"
                     app:historyEnable="true"
                     app:historySize="99"
-                    android:textColor="@color/white"
-                    android:textColorHint="#B3ffffff"
+                    android:textColor="?attr/Titel_1"
+                    android:textColorHint="?attr/Titel_2"
                     android:hint="@string/type_note_here"
                     app:linkColor="@color/blue_500"
                     app:linkUnderline="true"
@@ -238,7 +238,7 @@
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_bold"
                 android:scaleType="center"
-                android:tint="@color/white"
+                android:tint="?attr/Titel_1"
                 android:background="?android:selectableItemBackground">
             </ImageButton>
 
@@ -248,7 +248,7 @@
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_italic"
                 android:scaleType="center"
-                android:tint="@color/white"
+                android:tint="?attr/Titel_1"
                 android:background="?android:selectableItemBackground">
             </ImageButton>
 
@@ -258,7 +258,7 @@
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_underline"
                 android:scaleType="center"
-                android:tint="@color/white"
+                android:tint="?attr/Titel_1"
                 android:background="?android:selectableItemBackground">
             </ImageButton>
 
@@ -268,7 +268,7 @@
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_strikethrough"
                 android:scaleType="center"
-                android:tint="@color/white"
+                android:tint="?attr/Titel_1"
                 android:background="?android:selectableItemBackground">
             </ImageButton>
 
@@ -278,7 +278,7 @@
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_bullet"
                 android:scaleType="center"
-                android:tint="@color/white"
+                android:tint="?attr/Titel_1"
                 android:background="?android:selectableItemBackground">
             </ImageButton>
 
@@ -288,7 +288,7 @@
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_quote"
                 android:scaleType="center"
-                android:tint="@color/white"
+                android:tint="?attr/Titel_1"
                 android:background="?android:selectableItemBackground">
             </ImageButton>
 
@@ -299,7 +299,7 @@
                 android:layout_height="48dp"
                 android:src="@drawable/ic_format_clear"
                 android:scaleType="center"
-                android:tint="@color/white"
+                android:tint="?attr/Titel_1"
                 android:background="?android:selectableItemBackground">
             </ImageButton>
 
