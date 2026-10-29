@@ -17,7 +17,7 @@
 
         <item name="settingbackground">@color/light_color</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="icon_a">@drawable/ic_keyboard_backspace_black_24dp</item>
+        <item name="icon_a">@drawable/ic_keyboard_backspace_black_24dp2</item>
         <item name="Boder">@color/Boder_Light</item>
         <item name="Titel_1">@color/Titele_A_Light</item>
         <item name="Titel_2">@color/Titele_AA_Light</item>
