@@ -46,8 +46,6 @@ import com.bumbumapps.mynotes.database.NotesDatabase;
 import com.bumbumapps.mynotes.entities.Note;
 import com.bumbumapps.mynotes.listeners.InterAdListener;
 import com.bumbumapps.mynotes.listeners.NotesListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 public class MainActivity extends AppCompatActivity{
 
