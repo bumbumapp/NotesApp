@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:background="@drawable/bg_checklist_row"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="8dp">
+
+    <CheckBox
+        android:id="@+id/rowCheck"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:buttonTint="@color/teal_200"
+        android:contentDescription="@string/checklist_done" />
+
+    <EditText
+        android:id="@+id/rowText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:hint="@string/checklist_item_hint"
+        android:imeOptions="actionNext"
+        android:importantForAutofill="no"
+        android:inputType="textCapSentences|textMultiLine"
+        android:maxLines="4"
+        android:minHeight="48dp"
+        android:textColor="?attr/Titel_1"
+        android:textColorHint="?attr/Titel_2"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/rowDelete"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/checklist_remove_item"
+        android:src="@drawable/ic_close_small" />
+</LinearLayout>

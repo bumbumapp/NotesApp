@@ -16,6 +16,12 @@ public interface NoteDao {
     @Query("SELECT * FROM notes ORDER BY id DESC")
     List<Note> getAllNotes();
 
+    @Query("SELECT * FROM notes WHERE id = :id")
+    Note getNote(int id);
+
+    @Query("SELECT * FROM notes WHERE reminder_at > 0")
+    List<Note> getNotesWithReminder();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void  insertNote(Note note);
 

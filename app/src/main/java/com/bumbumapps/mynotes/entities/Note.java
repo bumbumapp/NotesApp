@@ -34,6 +34,68 @@ public class Note implements Serializable {
     @ColumnInfo(name = "web_link")
     private String webLink;
 
+    /** 1 when the note is pinned to the top of the list. */
+    @ColumnInfo(name = "pinned", defaultValue = "0")
+    private int pinned;
+
+    /** Optional user category; null or empty means uncategorised. */
+    @ColumnInfo(name = "category")
+    private String category;
+
+    /** Reminder time in epoch millis, 0 when none. */
+    @ColumnInfo(name = "reminder_at", defaultValue = "0")
+    private long reminderAt;
+
+    /** 0 = rich text note, 1 = checklist. */
+    @ColumnInfo(name = "note_type", defaultValue = "0")
+    private int noteType;
+
+    public static final int TYPE_TEXT = 0;
+    public static final int TYPE_CHECKLIST = 1;
+
+    public int getPinned() {
+        return pinned;
+    }
+
+    public void setPinned(int pinned) {
+        this.pinned = pinned;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public long getReminderAt() {
+        return reminderAt;
+    }
+
+    public void setReminderAt(long reminderAt) {
+        this.reminderAt = reminderAt;
+    }
+
+    public int getNoteType() {
+        return noteType;
+    }
+
+    public void setNoteType(int noteType) {
+        this.noteType = noteType;
+    }
+
+    /** Editors rebuild a Note from their fields; this keeps the organising data they do not edit. */
+    public void copyMetaFrom(Note other) {
+        if (other == null) {
+            return;
+        }
+        pinned = other.pinned;
+        category = other.category;
+        reminderAt = other.reminderAt;
+        noteType = other.noteType;
+    }
+
     public int getId() {
         return id;
     }

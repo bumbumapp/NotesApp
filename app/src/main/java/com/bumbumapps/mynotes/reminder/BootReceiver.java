@@ -1,0 +1,30 @@
+package com.bumbumapps.mynotes.reminder;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+import com.bumbumapps.mynotes.database.NotesDatabase;
+import com.bumbumapps.mynotes.entities.Note;
+
+import java.util.concurrent.Executors;
+
+/** Alarms are lost on reboot: put every pending reminder back. */
+public class BootReceiver extends BroadcastReceiver {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        final Context app = context.getApplicationContext();
+        final PendingResult result = goAsync();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                for (Note n : NotesDatabase.getNotesDatabase(app).noteDao().getNotesWithReminder()) {
+                    ReminderScheduler.schedule(app, n);
+                }
+            } catch (RuntimeException ignored) {
+            } finally {
+                result.finish();
+            }
+        });
+    }
+}

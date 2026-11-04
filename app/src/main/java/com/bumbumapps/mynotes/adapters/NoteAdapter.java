@@ -26,6 +26,7 @@ import java.util.TimerTask;
 import com.bumbumapps.mynotes.R;
 import com.bumbumapps.mynotes.SharedPref.Setting;
 import com.bumbumapps.mynotes.entities.Note;
+import com.bumbumapps.mynotes.logic.Checklist;
 import com.bumbumapps.mynotes.listeners.NotesListener;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
@@ -64,35 +65,43 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             @Override
             public boolean onLongClick(View view) {
                 notesListener.OnNoteLongClickListener(notes.get(position),position);
-                notifyItemRemoved(position);
                return true;
             }
         });
-        int step = 1;
-        int final_step = 1;
-        for (int i = 1; i < position + 1; i++) {
-            if (i == position + 1) {
-                final_step = step;
-            }
-            step++;
-        }
-
-        switch (step) {
-            case 1:
-                holder.item_new.setVisibility(View.VISIBLE);
-                break;
-            default:
-                holder.item_new.setVisibility(View.GONE);
-                break;
-
-        }
+        holder.item_new.setVisibility(position == 0 && note.getPinned() == 0 ? View.VISIBLE : View.GONE);
 
         holder.textTitle.setText(note.getTitle());
-        if (note.getSubtitle().trim().isEmpty()){
+        boolean checklist = note.getNoteType() == Note.TYPE_CHECKLIST;
+        String preview = checklist
+                ? Checklist.preview(Checklist.parse(note.getNoteText()), 5)
+                : note.getSubtitle();
+        if (preview == null || preview.trim().isEmpty()){
             holder.textSubtitle.setVisibility(View.GONE);
         }else {
-            holder.textSubtitle.setText(note.getSubtitle());
+            holder.textSubtitle.setVisibility(View.VISIBLE);
+            holder.textSubtitle.setText(preview);
         }
+        StringBuilder badges = new StringBuilder();
+        if (note.getPinned() == 1) {
+            badges.append(context.getString(R.string.badge_pinned));
+        }
+        if (checklist) {
+            java.util.List<Checklist.Item> items = Checklist.parse(note.getNoteText());
+            appendBadge(badges, context.getString(R.string.badge_progress,
+                    Checklist.doneCount(items), Checklist.count(items)));
+        }
+        if (note.getCategory() != null && !note.getCategory().trim().isEmpty()) {
+            appendBadge(badges, note.getCategory().trim());
+        }
+        if (note.getReminderAt() > 0) {
+            appendBadge(badges, context.getString(R.string.badge_reminder,
+                    android.text.format.DateUtils.formatDateTime(context, note.getReminderAt(),
+                            android.text.format.DateUtils.FORMAT_SHOW_DATE
+                                    | android.text.format.DateUtils.FORMAT_SHOW_TIME
+                                    | android.text.format.DateUtils.FORMAT_ABBREV_MONTH)));
+        }
+        holder.textBadges.setVisibility(badges.length() == 0 ? View.GONE : View.VISIBLE);
+        holder.textBadges.setText(badges);
         holder.textDateTime.setText(note.getDateTime());
 
         GradientDrawable gradientDrawable = (GradientDrawable) holder.layoutNote.getBackground();
@@ -150,7 +159,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     static class  NoteViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textTitle, textSubtitle, textDateTime, item_new;
+        TextView textTitle, textSubtitle, textDateTime, item_new, textBadges;
         RelativeLayout layoutNote;
         RoundedImageView imageNote;
 
@@ -159,6 +168,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(itemView);
 
             item_new = itemView.findViewById(R.id.item_new);
+            textBadges = itemView.findViewById(R.id.item_badges);
             textTitle  = itemView.findViewById(R.id.item_textTitlem);
             textSubtitle  = itemView.findViewById(R.id.item_textSubTitle);
             textDateTime  = itemView.findViewById(R.id.item_textDateTime);
@@ -166,6 +176,21 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             imageNote  = itemView.findViewById(R.id.item_imageNote);
         }
 
+    }
+
+    private static void appendBadge(StringBuilder sb, String badge) {
+        if (sb.length() > 0) {
+            sb.append("  \u2022  ");
+        }
+        sb.append(badge);
+    }
+
+    /** Replaces the shown list (already filtered and sorted by NoteFilter). */
+    @SuppressLint("NotifyDataSetChanged")
+    public void setNotes(List<Note> shown) {
+        this.notes = new ArrayList<>(shown);
+        this.noteSource = this.notes;
+        notifyDataSetChanged();
     }
 
     public void searchNote(final  String searchKeyword) {

@@ -12,7 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.content.Context;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,10 +34,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutorService;
 
+import com.bumbumapps.mynotes.Activity.Note.ChecklistActivity;
 import com.bumbumapps.mynotes.Activity.Note.CreateNoteActivity;
+import com.bumbumapps.mynotes.logic.Checklist;
+import com.bumbumapps.mynotes.logic.NoteFilter;
+import com.bumbumapps.mynotes.reminder.ReminderScheduler;
+import com.bumbumapps.mynotes.reminder.ReminderUi;
 import com.bumbumapps.mynotes.Activity.Setting.SettingActivity;
 import com.bumbumapps.mynotes.AdsHelper;
 import com.bumbumapps.mynotes.Methods.Methods;
@@ -59,9 +66,10 @@ public class MainActivity extends AppCompatActivity{
     private NoteAdapter noteAdapter;
     private RelativeLayout relativeLayout;
     private ImageButton settingbutton;
-    private int noteClickedPostion = -1;
-    AlertDialog dialogDeletNote;
-    final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    public static final String EXTRA_OPEN_NOTE_ID = "open_note_id";
+    private final ExecutorService io = Executors.newSingleThreadExecutor();
+    private String query = "";
+    private String filter = NoteFilter.ALL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +103,7 @@ public class MainActivity extends AppCompatActivity{
         methods = new Methods(this, new InterAdListener() {
             @Override
             public void onClick(int position, Note note, String type) {
-                noteClickedPostion = position;
-                Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
-                intent.putExtra("isViemOrUpdate", true);
-                intent.putExtra("note", note);
-                startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
+                openNote(note);
             }
 
         });
@@ -121,7 +125,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
         noteList = new ArrayList<>();
-        noteAdapter = new NoteAdapter(this, noteList, new NotesListener() {
+        noteAdapter = new NoteAdapter(this, new ArrayList<>(), new NotesListener() {
             @Override
             public void onNoteClicked(Note note, int position) {
                 methods.showInter(position, note, "");
@@ -129,171 +133,256 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void OnNoteLongClickListener(Note note, int position) {
-
-                    if (dialogDeletNote == null) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        View view = LayoutInflater.from(MainActivity.this).inflate(
-                                R.layout.layout_delete_note_move, (ViewGroup) findViewById(R.id.layoutDeleteNoteContainer)
-                        );
-                        builder.setView(view);
-                        dialogDeletNote = builder.create();
-                        if (dialogDeletNote.getWindow() != null){
-                            dialogDeletNote.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                        }
-                        view.findViewById(R.id.textDeleteNote).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                @SuppressLint("StaticFieldLeak")
-                                class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
-
-                                    @Override
-                                    protected void onPreExecute() {
-                                        super.onPreExecute();
-                                        deleteSaveNote(note);
-                                    }
-
-                                    @Override
-                                    protected Void doInBackground(Void... voids) {
-                                        NotesDatabase.getNotesDatabase(getApplicationContext()).noteDao()
-                                                .deletNote(note);
-
-                                        return null;
-                                    }
-
-                                    @Override
-                                    protected void onPostExecute(Void aVoid) {
-                                        super.onPostExecute(aVoid);
-                                        try {
-                                            Intent refresh = new Intent(MainActivity.this, MainActivity.class);
-                                            startActivity(refresh);//Start the same Activity
-                                            finish(); //finish Activity.
-
-                                     //   finish();
-                                        }catch (Exception e){
-                                           Log.d("Tag","Error"+e.getMessage());
-                                        }
-
-                                    }
-                                }
-
-
-
-
-                                    new DeleteNoteTask().execute();
-
-
-                            }
-                        });
-
-                        view.findViewById(R.id.textCancel).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                dialogDeletNote.dismiss();
-                            }
-                        });
-                    }
-
-                    dialogDeletNote.show();
-                }
-
+                showNoteActions(note);
+            }
         });
 
         notesRecyclerView.setAdapter(noteAdapter);
-        getNotes(REQUST_CODE_SHOW_NOTES, false);
 
+        findViewById(R.id.imageAddChecklist).setOnClickListener(v ->
+                startActivity(new Intent(this, ChecklistActivity.class)));
 
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                noteAdapter.cancelTimer();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (noteList.size() != 0){
-                    noteAdapter.searchNote(editable.toString());
-                }
-
+                query = editable.toString();
+                refreshList();
             }
         });
-
-//        LinearLayout adView = findViewById(R.id.adView_main);
-//        methods.showBannerAd(adView);
-
-    }
-
-    private void deleteSaveNote(Note note) {
-    @SuppressLint("StaticFieldLeak")
-    class  DeleteSaveNoteTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            DeleteDatabase.getNotesDatabase(getApplicationContext()).noteDao().insertNote(note);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-        }
-    }
-    new DeleteSaveNoteTask().execute();
-
-
-    }
-    private void getNotes(final int requestCode, final  boolean isNoteDeleted){
-
-        @SuppressLint("StaticFieldLeak")
-        class GetNotesTask extends AsyncTask<Void, Void, List<Note>>{
-            @Override
-            protected List<Note> doInBackground(Void... voids) {
-                return NotesDatabase
-                        .getNotesDatabase(getApplicationContext())
-                        .noteDao().getAllNotes();
-            }
-
-            @Override
-            protected void onPostExecute(List<Note> notes) {
-                super.onPostExecute(notes);
-                if (requestCode == REQUST_CODE_SHOW_NOTES){
-                    noteList.addAll(notes);
-                    noteAdapter.notifyDataSetChanged();
-                }else if (requestCode == REQUEST_CODE_ADD_NOTE){
-                    noteList.add(0, notes.get(0));
-                    noteAdapter.notifyItemInserted(0);
-                    notesRecyclerView.smoothScrollToPosition(0);
-                }else if (requestCode == REQUEST_CODE_UPDATE_NOTE){
-                    noteList.remove(noteClickedPostion);
-                    if (isNoteDeleted){
-                        noteAdapter.notifyItemRemoved(noteClickedPostion);
-                    }else {
-                        noteList.add(noteClickedPostion, notes.get(noteClickedPostion));
-                        noteAdapter.notifyItemChanged(noteClickedPostion);
-                    }
-                }
-            }
-        }
-        new GetNotesTask().execute();
+        handleOpenNoteIntent(getIntent());
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_ADD_NOTE && resultCode == RESULT_OK) {
-            getNotes(REQUEST_CODE_ADD_NOTE, false);
-        } else if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK){
-            if (data != null){
-                getNotes(REQUEST_CODE_UPDATE_NOTE,data.getBooleanExtra("isNoteDeleted",false));
-            }
-        }
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleOpenNoteIntent(intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadNotes();
+    }
+
+    /** A tapped reminder notification opens the note it belongs to. */
+    private void handleOpenNoteIntent(Intent intent) {
+        final int id = intent == null ? -1 : intent.getIntExtra(EXTRA_OPEN_NOTE_ID, -1);
+        if (id < 0) {
+            return;
+        }
+        intent.removeExtra(EXTRA_OPEN_NOTE_ID);
+        io.execute(() -> {
+            Note n = NotesDatabase.getNotesDatabase(getApplicationContext()).noteDao().getNote(id);
+            if (n != null) {
+                runOnUiThread(() -> openNote(n));
+            }
+        });
+    }
+
+    private void openNote(Note note) {
+        Intent intent;
+        if (note.getNoteType() == Note.TYPE_CHECKLIST) {
+            intent = new Intent(getApplicationContext(), ChecklistActivity.class);
+            intent.putExtra(ChecklistActivity.EXTRA_NOTE, note);
+        } else {
+            intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+            intent.putExtra("isViemOrUpdate", true);
+            intent.putExtra("note", note);
+        }
+        startActivity(intent);
+    }
+
+    private void loadNotes() {
+        io.execute(() -> {
+            final List<Note> notes = NotesDatabase.getNotesDatabase(getApplicationContext()).noteDao().getAllNotes();
+            runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed()) {
+                    return;
+                }
+                noteList = notes;
+                refreshList();
+            });
+        });
+    }
+
+    private void refreshList() {
+        List<String> cats = NoteFilter.categories(noteList);
+        boolean any = false;
+        boolean hasPinned = false, hasChecklist = false, hasReminder = false;
+        for (Note n : noteList) {
+            hasPinned |= n.getPinned() == 1;
+            hasChecklist |= n.getNoteType() == Note.TYPE_CHECKLIST;
+            hasReminder |= n.getReminderAt() > 0;
+        }
+        List<String> keys = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+        keys.add(NoteFilter.ALL);
+        labels.add(getString(R.string.filter_all));
+        if (hasPinned) {
+            keys.add(NoteFilter.PINNED);
+            labels.add(getString(R.string.filter_pinned));
+        }
+        if (hasChecklist) {
+            keys.add(NoteFilter.CHECKLISTS);
+            labels.add(getString(R.string.filter_checklists));
+        }
+        if (hasReminder) {
+            keys.add(NoteFilter.REMINDERS);
+            labels.add(getString(R.string.filter_reminders));
+        }
+        for (String c : cats) {
+            keys.add(c);
+            labels.add(c);
+        }
+        if (!keys.contains(filter)) {
+            filter = NoteFilter.ALL;
+        }
+        LinearLayout chips = findViewById(R.id.filterChips);
+        chips.removeAllViews();
+        float d = getResources().getDisplayMetrics().density;
+        for (int i = 0; i < keys.size(); i++) {
+            final String key = keys.get(i);
+            TextView chip = new TextView(this);
+            boolean sel = key.equals(filter);
+            chip.setText(labels.get(i));
+            chip.setTextSize(13);
+            chip.setTypeface(chip.getTypeface(), android.graphics.Typeface.BOLD);
+            chip.setGravity(android.view.Gravity.CENTER);
+            chip.setPadding((int) (14 * d), 0, (int) (14 * d), 0);
+            chip.setClickable(true);
+            chip.setFocusable(true);
+            chip.setBackgroundResource(sel ? R.drawable.bg_chip_on : R.drawable.bg_chip_off);
+            chip.setTextColor(sel ? ContextCompat.getColor(this, R.color.dark_color) : resolveColor(R.attr.Titel_1));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, (int) (40 * d));
+            lp.setMarginEnd((int) (8 * d));
+            chip.setLayoutParams(lp);
+            chip.setOnClickListener(v -> {
+                filter = key;
+                refreshList();
+            });
+            chips.addView(chip);
+        }
+        findViewById(R.id.chipScroll).setVisibility(keys.size() > 1 ? View.VISIBLE : View.GONE);
+        List<Note> shown = NoteFilter.apply(noteList, query, filter);
+        noteAdapter.setNotes(shown);
+        findViewById(R.id.emptyNotes).setVisibility(shown.isEmpty() && !noteList.isEmpty() ? View.VISIBLE : View.GONE);
+    }
+
+    private int resolveColor(int attr) {
+        android.util.TypedValue tv = new android.util.TypedValue();
+        getTheme().resolveAttribute(attr, tv, true);
+        return tv.data;
+    }
+
+    private void showNoteActions(final Note note) {
+        final List<String> labels = new ArrayList<>();
+        final List<Runnable> actions = new ArrayList<>();
+        labels.add(getString(note.getPinned() == 1 ? R.string.action_unpin : R.string.action_pin));
+        actions.add(() -> {
+            note.setPinned(note.getPinned() == 1 ? 0 : 1);
+            saveMeta(note);
+        });
+        labels.add(getString(R.string.action_category));
+        actions.add(() -> chooseCategory(note));
+        labels.add(getString(R.string.action_reminder));
+        actions.add(() -> ReminderUi.show(this, note, this::loadNotes));
+        labels.add(getString(R.string.action_share));
+        actions.add(() -> shareNote(note));
+        labels.add(getString(R.string.action_trash));
+        actions.add(() -> confirmTrash(note));
+        new AlertDialog.Builder(this)
+                .setTitle(note.getTitle() == null || note.getTitle().trim().isEmpty()
+                        ? getString(R.string.app_name) : note.getTitle())
+                .setItems(labels.toArray(new String[0]), (d, which) -> actions.get(which).run())
+                .show();
+    }
+
+    private void saveMeta(final Note note) {
+        io.execute(() -> {
+            NotesDatabase.getNotesDatabase(getApplicationContext()).noteDao().insertNote(note);
+            runOnUiThread(this::loadNotes);
+        });
+    }
+
+    private void chooseCategory(final Note note) {
+        final List<String> cats = NoteFilter.categories(noteList);
+        final List<String> labels = new ArrayList<>();
+        labels.add(getString(R.string.category_none));
+        labels.addAll(cats);
+        labels.add(getString(R.string.category_new));
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.category_title)
+                .setItems(labels.toArray(new String[0]), (d, which) -> {
+                    if (which == 0) {
+                        note.setCategory(null);
+                        saveMeta(note);
+                    } else if (which == labels.size() - 1) {
+                        askNewCategory(note);
+                    } else {
+                        note.setCategory(cats.get(which - 1));
+                        saveMeta(note);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
+    }
+
+    private void askNewCategory(final Note note) {
+        final EditText input = new EditText(this);
+        input.setHint(R.string.category_new_hint);
+        input.setSingleLine(true);
+        input.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
+        FrameLayout box = new FrameLayout(this);
+        int pad = (int) (20 * getResources().getDisplayMetrics().density);
+        box.setPadding(pad, pad / 2, pad, 0);
+        box.addView(input);
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.category_new)
+                .setView(box)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.ok, (d, w) -> {
+                    String c = NoteFilter.cleanCategory(input.getText().toString());
+                    note.setCategory(c.isEmpty() ? null : c);
+                    saveMeta(note);
+                })
+                .show();
+    }
+
+    private void shareNote(Note note) {
+        String body = note.getNoteType() == Note.TYPE_CHECKLIST
+                ? Checklist.preview(Checklist.parse(note.getNoteText()), Integer.MAX_VALUE)
+                : (note.getSubtitle() == null ? "" : note.getSubtitle() + "\n\n")
+                + android.text.Html.fromHtml(note.getNoteText() == null ? "" : note.getNoteText()).toString().trim();
+        Intent send = new Intent(Intent.ACTION_SEND).setType("text/plain")
+                .putExtra(Intent.EXTRA_SUBJECT, note.getTitle())
+                .putExtra(Intent.EXTRA_TEXT, (note.getTitle() == null ? "" : note.getTitle() + "\n\n") + body);
+        startActivity(Intent.createChooser(send, getString(R.string.action_share)));
+    }
+
+    private void confirmTrash(final Note note) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.move_to_recycle_bin)
+                .setMessage(R.string.are_you_sure_you_want_to_move_to_recycle_bin_this_note)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.move_to_recycle_bin, (d, w) -> io.execute(() -> {
+                    Context app = getApplicationContext();
+                    ReminderScheduler.cancel(app, note.getId());
+                    DeleteDatabase.getNotesDatabase(app).noteDao().insertNote(note);
+                    NotesDatabase.getNotesDatabase(app).noteDao().deletNote(note);
+                    runOnUiThread(this::loadNotes);
+                }))
+                .show();
+    }
 
     private void loadbannerads() {
         // UMP consent first; Mobile Ads starts and requests ads only after canRequestAds().
@@ -310,5 +399,17 @@ public class MainActivity extends AppCompatActivity{
                 new Intent(getApplicationContext(), CreateNoteActivity.class),
                 REQUEST_CODE_ADD_NOTE
         ));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        ReminderUi.onPermissionResult(this, requestCode, grantResults);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        io.shutdown();
     }
 }

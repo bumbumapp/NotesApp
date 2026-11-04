@@ -329,6 +329,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         if (alreadyAvailableNote != null){
             note.setId(alreadyAvailableNote.getId());
+            note.copyMetaFrom(alreadyAvailableNote);
         }
 
         @SuppressLint("StaticFieldLeak")

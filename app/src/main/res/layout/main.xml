@@ -105,6 +105,36 @@
             android:textSize="@dimen/_13sdp"/>
     </LinearLayout>
 
+    <HorizontalScrollView
+        android:id="@+id/chipScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/layoutSearch">
+
+        <LinearLayout
+            android:id="@+id/filterChips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp" />
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/emptyNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="40dp"
+        android:text="@string/no_matching_notes"
+        android:textColor="?attr/Titel_2"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintTop_toBottomOf="@id/chipScroll" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notesRecyclerView"
         android:layout_width="match_parent"
@@ -116,11 +146,27 @@
         android:paddingEnd="@dimen/_12sdp"
         android:paddingBottom="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutSearch"
+        app:layout_constraintTop_toBottomOf="@id/chipScroll"
         app:layout_constraintBottom_toTopOf="@+id/adView"/>
 
 
 
+
+    <ImageView
+        android:id="@+id/imageAddChecklist"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:background="@drawable/bg_chip_off"
+        android:contentDescription="@string/new_checklist"
+        android:elevation="6dp"
+        android:padding="@dimen/_9sdp"
+        android:src="@drawable/ic_checklist"
+        android:stateListAnimator="@animator/press_scale"
+        app:tint="?attr/Titel_1"
+        app:layout_constraintEnd_toStartOf="@+id/imageAddNoteMain"
+        app:layout_constraintBottom_toTopOf="@+id/adView" />
 
     <ImageView
         android:id="@+id/imageAddNoteMain"

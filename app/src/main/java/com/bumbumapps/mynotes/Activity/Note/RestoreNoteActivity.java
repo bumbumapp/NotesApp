@@ -168,6 +168,9 @@ public class RestoreNoteActivity extends AppCompatActivity {
         note.setDateTime(alreadyAvailableNote.getDateTime());
         note.setColor(setectedNoteColor);
         note.setImagePath(setectedImagePath);
+        note.setPinned(alreadyAvailableNote.getPinned());
+        note.setCategory(alreadyAvailableNote.getCategory());
+        note.setNoteType(alreadyAvailableNote.getNoteType());
 
         if (layoutWebURL.getVisibility() == View.VISIBLE){
             note.setWebLink(textWebURL.getText().toString());

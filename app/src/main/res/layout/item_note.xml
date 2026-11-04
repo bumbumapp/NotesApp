@@ -61,6 +61,20 @@
 
     <TextView
         android:layout_below="@+id/item_textSubTitle"
+        android:id="@+id/item_badges"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:includeFontPadding="false"
+        android:textColor="#F5B83D"
+        android:textSize="@dimen/_9ssp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_below="@+id/item_badges"
         android:id="@+id/item_textDateTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
