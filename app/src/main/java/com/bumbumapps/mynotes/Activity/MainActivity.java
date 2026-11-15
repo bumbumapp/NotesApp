@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final android.content.Context appCtx = getApplicationContext();
+        Executors.newSingleThreadExecutor().execute(() -> com.bumbumapps.mynotes.reminder.BootReceiver.rescheduleAll(appCtx));
         if (Setting.Dark_Mode ) {
             setTheme(R.style.AppTheme2);
         } else {

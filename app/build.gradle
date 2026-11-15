@@ -21,8 +21,8 @@ android {
         applicationId "com.bumbumapps.notes"
         minSdk 24
         targetSdk 36
-        versionCode 12
-        versionName "1.6.0"
+        versionCode 13
+        versionName "1.6.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
