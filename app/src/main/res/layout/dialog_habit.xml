@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_sheet"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/sheetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/jakarta_extrabold"
+        android:letterSpacing="-0.02"
+        android:text="@string/habit_add"
+        android:textColor="?attr/Titel_1"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/habitNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_chip_soft"
+        android:hint="@string/habit_name_hint"
+        android:importantForAutofill="no"
+        android:inputType="textCapSentences"
+        android:maxLength="60"
+        android:maxLines="1"
+        android:minHeight="52dp"
+        android:padding="14dp"
+        android:textColor="?attr/Titel_1"
+        android:textColorHint="?attr/Titel_2"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/jakarta_bold"
+        android:text="@string/habit_icon"
+        android:textColor="?attr/Titel_2"
+        android:textSize="12sp" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/iconRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/jakarta_bold"
+        android:text="@string/habit_color"
+        android:textColor="?attr/Titel_2"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:id="@+id/colorRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/habitDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/jakarta_bold"
+            android:gravity="center"
+            android:minWidth="88dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="@string/delete"
+            android:textColor="@color/colorDelete"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/habitSave"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_amber_button"
+            android:fontFamily="@font/jakarta_extrabold"
+            android:gravity="center"
+            android:text="@string/save"
+            android:textColor="@color/dark_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+</LinearLayout>

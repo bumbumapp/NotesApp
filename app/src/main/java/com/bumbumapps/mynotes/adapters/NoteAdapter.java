@@ -139,6 +139,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             }
         }
 
+        // Badges follow the title colour so "Pinned" stays readable on every note colour.
+        holder.textBadges.setTextColor(holder.textTitle.getCurrentTextColor());
         if (note.getImagePath() != null){
             holder.imageNote.setImageBitmap(BitmapFactory.decodeFile(note.getImagePath()));
             holder.imageNote.setVisibility(View.VISIBLE);

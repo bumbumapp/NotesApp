@@ -6,6 +6,8 @@ import android.content.Intent;
 
 import com.bumbumapps.mynotes.database.NotesDatabase;
 import com.bumbumapps.mynotes.entities.Note;
+import com.bumbumapps.mynotes.organizer.OrganizerDatabase;
+import com.bumbumapps.mynotes.organizer.Task;
 
 import java.util.concurrent.Executors;
 
@@ -20,6 +22,9 @@ public class BootReceiver extends BroadcastReceiver {
             try {
                 for (Note n : NotesDatabase.getNotesDatabase(app).noteDao().getNotesWithReminder()) {
                     ReminderScheduler.schedule(app, n);
+                }
+                for (Task t : OrganizerDatabase.get(app).dao().getTasksWithReminder()) {
+                    TaskReminders.schedule(app, t);
                 }
             } catch (RuntimeException ignored) {
             } finally {

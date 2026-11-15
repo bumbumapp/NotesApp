@@ -12,11 +12,11 @@
 
     <!--Night Mode Color-->
     <color name="colorAccent_Night">#F5B83D</color>
-    <color name="background_Night">#000000</color>
-    <color name="Background_Night_S">#141518</color>
-    <color name="Titele_A_Night">#DBDBDB</color>
-    <color name="Titele_AA_Night">#E9A0A0A0</color>
-    <color name="Boder_Night">#1C1E23</color>
+    <color name="background_Night">#0D0F16</color>
+    <color name="Background_Night_S">#171A23</color>
+    <color name="Titele_A_Night">#E6E8EF</color>
+    <color name="Titele_AA_Night">#9AA0B0</color>
+    <color name="Boder_Night">#2A2E3B</color>
 
 
 

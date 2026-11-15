@@ -232,6 +232,116 @@
             <LinearLayout
                 android:background="?attr/selectableItemBackground"
                 android:layout_marginBottom="15dp"
+                android:id="@+id/backupData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="60dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="10dp"
+                tools:ignore="RtlSymmetry">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center"
+                    android:padding="12dp"
+                    android:backgroundTint="#332FBF71"
+                    android:background="@drawable/abs_history_playlist"
+                    android:src="@drawable/ic_backup"
+                    app:tint="#2FBF71"
+                    tools:ignore="ObsoleteLayoutParam" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:textStyle="bold"
+                        android:textAlignment="viewStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/backup_title"
+                        android:textSize="17sp"
+                        android:textColor="?attr/Titel_1"
+                        tools:ignore="NestedWeights" />
+
+                    <TextView
+                        android:textAlignment="viewStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:text="@string/backup_sub"
+                        android:textColor="?attr/Titel_2" />
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginBottom="15dp"
+                android:id="@+id/restoreData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="60dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="10dp"
+                tools:ignore="RtlSymmetry">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center"
+                    android:padding="12dp"
+                    android:backgroundTint="#334C8DFF"
+                    android:background="@drawable/abs_history_playlist"
+                    android:src="@drawable/ic_restore"
+                    app:tint="#4C8DFF"
+                    tools:ignore="ObsoleteLayoutParam" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:textStyle="bold"
+                        android:textAlignment="viewStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/restore_title"
+                        android:textSize="17sp"
+                        android:textColor="?attr/Titel_1"
+                        tools:ignore="NestedWeights" />
+
+                    <TextView
+                        android:textAlignment="viewStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:text="@string/restore_sub"
+                        android:textColor="?attr/Titel_2" />
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:background="?attr/selectableItemBackground"
+                android:layout_marginBottom="15dp"
                 android:id="@+id/recyclebin"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"

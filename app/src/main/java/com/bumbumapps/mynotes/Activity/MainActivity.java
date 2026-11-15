@@ -38,6 +38,19 @@ import java.util.concurrent.ExecutorService;
 
 import com.bumbumapps.mynotes.Activity.Note.ChecklistActivity;
 import com.bumbumapps.mynotes.Activity.Note.CreateNoteActivity;
+import com.bumbumapps.mynotes.organizer.CalendarActivity;
+import com.bumbumapps.mynotes.organizer.DayKey;
+import com.bumbumapps.mynotes.organizer.Habit;
+import com.bumbumapps.mynotes.organizer.HabitLog;
+import com.bumbumapps.mynotes.organizer.HabitsActivity;
+import com.bumbumapps.mynotes.organizer.JournalActivity;
+import com.bumbumapps.mynotes.organizer.JournalEntry;
+import com.bumbumapps.mynotes.organizer.OrganizerDao;
+import com.bumbumapps.mynotes.organizer.OrganizerDatabase;
+import com.bumbumapps.mynotes.organizer.Streaks;
+import com.bumbumapps.mynotes.organizer.Task;
+import com.bumbumapps.mynotes.organizer.TaskLogic;
+import com.bumbumapps.mynotes.organizer.TasksActivity;
 import com.bumbumapps.mynotes.logic.Checklist;
 import com.bumbumapps.mynotes.logic.NoteFilter;
 import com.bumbumapps.mynotes.reminder.ReminderScheduler;
@@ -157,6 +170,10 @@ public class MainActivity extends AppCompatActivity{
                 refreshList();
             }
         });
+        findViewById(R.id.tileTasks).setOnClickListener(v -> startActivity(new Intent(this, TasksActivity.class)));
+        findViewById(R.id.tileHabits).setOnClickListener(v -> startActivity(new Intent(this, HabitsActivity.class)));
+        findViewById(R.id.tileJournal).setOnClickListener(v -> startActivity(new Intent(this, JournalActivity.class)));
+        findViewById(R.id.tileCalendar).setOnClickListener(v -> startActivity(new Intent(this, CalendarActivity.class)));
         handleOpenNoteIntent(getIntent());
     }
 
@@ -171,6 +188,52 @@ public class MainActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         loadNotes();
+        loadOrganizerStatus();
+    }
+
+    /** Live status line on each organizer tile. */
+    private void loadOrganizerStatus() {
+        io.execute(() -> {
+            OrganizerDao dao = OrganizerDatabase.get(getApplicationContext()).dao();
+            final List<Task> tasks = dao.getTasks();
+            final List<Habit> habits = dao.getHabits();
+            final int today = DayKey.today();
+            final List<HabitLog> todayLogs = dao.getHabitLogsForDay(today);
+            final List<JournalEntry> journal = dao.getJournal();
+            runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed()) {
+                    return;
+                }
+                int openToday = TaskLogic.openToday(tasks, today);
+                int open = TaskLogic.openCount(tasks);
+                ((TextView) findViewById(R.id.tileTasksSub)).setText(openToday > 0
+                        ? getString(R.string.tile_tasks_today, openToday)
+                        : open > 0 ? getString(R.string.tile_tasks_open, open) : getString(R.string.tile_tasks_none));
+                int done = 0;
+                for (Habit h : habits) {
+                    for (HabitLog l : todayLogs) {
+                        if (l.habitId == h.id) {
+                            done++;
+                            break;
+                        }
+                    }
+                }
+                ((TextView) findViewById(R.id.tileHabitsSub)).setText(habits.isEmpty()
+                        ? getString(R.string.tile_habits_none) : getString(R.string.tile_habits_done, done, habits.size()));
+                java.util.Set<Integer> days = new java.util.HashSet<>();
+                for (JournalEntry e : journal) {
+                    days.add(e.day);
+                }
+                int streak = Streaks.current(days, today);
+                ((TextView) findViewById(R.id.tileJournalSub)).setText(streak > 0
+                        ? getString(R.string.tile_journal_streak, streak) : getString(R.string.tile_journal_none));
+                String month = new java.text.SimpleDateFormat("LLLL", java.util.Locale.getDefault()).format(new java.util.Date());
+                if (!month.isEmpty()) {
+                    month = month.substring(0, 1).toUpperCase(java.util.Locale.getDefault()) + month.substring(1);
+                }
+                ((TextView) findViewById(R.id.tileCalendarSub)).setText(month);
+            });
+        });
     }
 
     /** A tapped reminder notification opens the note it belongs to. */
@@ -275,7 +338,9 @@ public class MainActivity extends AppCompatActivity{
         findViewById(R.id.chipScroll).setVisibility(keys.size() > 1 ? View.VISIBLE : View.GONE);
         List<Note> shown = NoteFilter.apply(noteList, query, filter);
         noteAdapter.setNotes(shown);
-        findViewById(R.id.emptyNotes).setVisibility(shown.isEmpty() && !noteList.isEmpty() ? View.VISIBLE : View.GONE);
+        TextView emptyNotes = findViewById(R.id.emptyNotes);
+        emptyNotes.setText(noteList.isEmpty() ? R.string.notes_empty : R.string.no_matching_notes);
+        emptyNotes.setVisibility(shown.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private int resolveColor(int attr) {

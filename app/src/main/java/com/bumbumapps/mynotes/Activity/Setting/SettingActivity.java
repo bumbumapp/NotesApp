@@ -14,6 +14,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import android.net.Uri;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -43,6 +48,8 @@ public class SettingActivity extends AppCompatActivity {
     private TextView tv_cachesize;
     private AlertDialog dialogDeletNote;
     private ProgressDialog progressDialog;
+    private ActivityResultLauncher<String> createBackup;
+    private ActivityResultLauncher<String[]> openBackup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +75,7 @@ public class SettingActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Dark_mode();
+        setupBackup();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (Setting.Dark_Mode){
@@ -262,5 +270,53 @@ public class SettingActivity extends AppCompatActivity {
         final String[] units = new String[]{"Bytes", "kB", "MB", "GB", "TB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    /** Backup and restore through the system file picker; nothing leaves the phone unless the user picks a place. */
+    private void setupBackup() {
+        createBackup = registerForActivityResult(new ActivityResultContracts.CreateDocument("application/json"), uri -> {
+            if (uri != null) {
+                runBackup(uri, true);
+            }
+        });
+        openBackup = registerForActivityResult(new ActivityResultContracts.OpenDocument(), uri -> {
+            if (uri != null) {
+                runBackup(uri, false);
+            }
+        });
+        findViewById(R.id.backupData).setOnClickListener(v -> {
+            String name = "notes-backup-" + new java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.US)
+                    .format(new java.util.Date()) + ".json";
+            try {
+                createBackup.launch(name);
+            } catch (RuntimeException e) {
+                Toast.makeText(this, R.string.backup_no_picker, Toast.LENGTH_LONG).show();
+            }
+        });
+        findViewById(R.id.restoreData).setOnClickListener(v -> {
+            try {
+                openBackup.launch(new String[]{"application/json", "text/plain", "application/octet-stream"});
+            } catch (RuntimeException e) {
+                Toast.makeText(this, R.string.backup_no_picker, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void runBackup(final Uri uri, final boolean export) {
+        final android.content.Context app = getApplicationContext();
+        new Thread(() -> {
+            String msg;
+            try {
+                com.bumbumapps.mynotes.organizer.BackupRestore.Result r = export
+                        ? com.bumbumapps.mynotes.organizer.BackupRestore.export(app, uri)
+                        : com.bumbumapps.mynotes.organizer.BackupRestore.restore(app, uri);
+                msg = getString(export ? R.string.backup_done : R.string.restore_done,
+                        r.notes, r.tasks, r.habits, r.journal);
+            } catch (Exception e) {
+                msg = getString(export ? R.string.backup_failed : R.string.restore_failed);
+            }
+            final String text = msg;
+            runOnUiThread(() -> Toast.makeText(this, text, Toast.LENGTH_LONG).show());
+        }).start();
     }
 }

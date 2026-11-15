@@ -7,185 +7,460 @@
     android:background="@android:color/transparent"
     tools:context=".Activity.MainActivity">
 
-    <!-- Bento header: greeting, big title and a square settings button. -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:theme="@style/ToolbarColoredBackArrow"
-        app:contentInsetStart="0dp"
-        tools:ignore="MissingConstraints">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="20dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="4dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textGreeting"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/jakarta_medium"
-                    android:text="@string/bento_greeting_evening"
-                    android:textColor="?attr/Titel_2"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/jakarta_extrabold"
-                    android:letterSpacing="-0.03"
-                    android:text="@string/bento_home_title"
-                    android:textColor="?attr/Titel_1"
-                    android:textSize="32sp" />
-            </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/settingsbutton"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:background="@drawable/bento_square_action"
-                android:contentDescription="@string/bento_settings"
-                android:padding="11dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_setting"
-                app:tint="?attr/Titel_1" />
-        </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
-
-
-
-    <LinearLayout
-        android:id="@+id/layoutSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/background_search"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_home">
-
-        <ImageView
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_search"
-            app:tint="?attr/Titel_2" />
-
-        <EditText
-            android:id="@+id/inputSearch"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_32sdp"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:background="@null"
-            android:hint="@string/search_note"
-            android:imeOptions="actionDone"
-            android:importantForAutofill="no"
-            android:includeFontPadding="false"
-            android:inputType="text"
-            android:textColor="?attr/Titel_1"
-            android:textColorHint="?attr/Titel_2"
-            android:textSize="@dimen/_13sdp"/>
-    </LinearLayout>
-
-    <HorizontalScrollView
-        android:id="@+id/chipScroll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@id/layoutSearch">
-
-        <LinearLayout
-            android:id="@+id/filterChips"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingStart="20dp"
-            android:paddingEnd="12dp" />
-    </HorizontalScrollView>
-
-    <TextView
-        android:id="@+id/emptyNotes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingHorizontal="40dp"
-        android:text="@string/no_matching_notes"
-        android:textColor="?attr/Titel_2"
-        android:textSize="15sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/adView"
-        app:layout_constraintTop_toBottomOf="@id/chipScroll" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notesRecyclerView"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorHome"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/_2sdp"
-        android:layout_marginEnd="@dimen/_2sdp"
-        android:clipToPadding="false"
-        android:paddingStart="0dp"
-        android:paddingEnd="@dimen/_12sdp"
-        android:paddingBottom="@dimen/_12sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chipScroll"
-        app:layout_constraintBottom_toTopOf="@+id/adView"/>
-
-
-
-
-    <ImageView
-        android:id="@+id/imageAddChecklist"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_15sdp"
-        android:background="@drawable/bg_chip_off"
-        android:contentDescription="@string/new_checklist"
-        android:elevation="6dp"
-        android:padding="@dimen/_9sdp"
-        android:src="@drawable/ic_checklist"
-        android:stateListAnimator="@animator/press_scale"
-        app:tint="?attr/Titel_1"
-        app:layout_constraintEnd_toStartOf="@+id/imageAddNoteMain"
-        app:layout_constraintBottom_toTopOf="@+id/adView" />
-
-    <ImageView
-        android:id="@+id/imageAddNoteMain"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:layout_marginBottom="@dimen/_15sdp"
-        android:background="@drawable/background_add_button"
-        android:contentDescription="@string/app_name"
-        android:padding="@dimen/_9sdp"
-        android:onClick="OnClick"
-        android:stateListAnimator="@animator/press_scale"
-        android:elevation="6dp"
-        android:src="@drawable/ic_add"
-        app:tint="@color/dark_color"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/adView"
-        />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <!-- The whole header (title, organizer grid, search, filters) scrolls away with the notes. -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:stateListAnimator="@null"
+            app:elevation="0dp">
+
+            <LinearLayout
+                android:id="@+id/homeHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <!-- Bento header: greeting, big title and a square settings button. -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:theme="@style/ToolbarColoredBackArrow"
+                    app:contentInsetStart="0dp"
+                    app:contentInsetEnd="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="4dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textGreeting"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/jakarta_medium"
+                                android:text="@string/bento_greeting_evening"
+                                android:textColor="?attr/Titel_2"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/jakarta_extrabold"
+                                android:letterSpacing="-0.03"
+                                android:text="@string/bento_home_title"
+                                android:textColor="?attr/Titel_1"
+                                android:textSize="32sp" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/settingsbutton"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bento_square_action"
+                            android:contentDescription="@string/bento_settings"
+                            android:padding="11dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_setting"
+                            app:tint="?attr/Titel_1" />
+                    </LinearLayout>
+                </androidx.appcompat.widget.Toolbar>
+
+                <!-- Organizer: the four modules next to notes. -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/jakarta_extrabold"
+                        android:letterSpacing="0.1"
+                        android:text="@string/organizer_title"
+                        android:textAllCaps="true"
+                        android:textColor="?attr/Titel_2"
+                        android:textSize="11sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/tileTasks"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:stateListAnimator="@animator/press_scale">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_amber"
+                    android:importantForAccessibility="no"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_mod_tasks"
+                    app:tint="#E8A21F" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/jakarta_extrabold"
+                        android:letterSpacing="-0.02"
+                        android:maxLines="1"
+                        android:text="@string/mod_tasks"
+                        android:textColor="?attr/Titel_1"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tileTasksSub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/jakarta_medium"
+                        android:maxLines="2"
+                        android:textColor="?attr/Titel_2"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tileHabits"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:stateListAnimator="@animator/press_scale">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_green"
+                    android:importantForAccessibility="no"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_mod_habits"
+                    app:tint="#2FBF71" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/jakarta_extrabold"
+                        android:letterSpacing="-0.02"
+                        android:maxLines="1"
+                        android:text="@string/mod_habits"
+                        android:textColor="?attr/Titel_1"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tileHabitsSub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/jakarta_medium"
+                        android:maxLines="2"
+                        android:textColor="?attr/Titel_2"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/tileJournal"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:stateListAnimator="@animator/press_scale">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_violet"
+                    android:importantForAccessibility="no"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_mod_journal"
+                    app:tint="#8B5CF6" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/jakarta_extrabold"
+                        android:letterSpacing="-0.02"
+                        android:maxLines="1"
+                        android:text="@string/mod_journal"
+                        android:textColor="?attr/Titel_1"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tileJournalSub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/jakarta_medium"
+                        android:maxLines="2"
+                        android:textColor="?attr/Titel_2"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tileCalendar"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:stateListAnimator="@animator/press_scale">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_blue"
+                    android:importantForAccessibility="no"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_mod_calendar"
+                    app:tint="#4C8DFF" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/jakarta_extrabold"
+                        android:letterSpacing="-0.02"
+                        android:maxLines="1"
+                        android:text="@string/mod_calendar"
+                        android:textColor="?attr/Titel_1"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tileCalendarSub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/jakarta_medium"
+                        android:maxLines="2"
+                        android:textColor="?attr/Titel_2"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/background_search"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/ic_search"
+                        app:tint="?attr/Titel_2" />
+
+                    <EditText
+                        android:id="@+id/inputSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:background="@null"
+                        android:hint="@string/search_note"
+                        android:imeOptions="actionDone"
+                        android:importantForAutofill="no"
+                        android:includeFontPadding="false"
+                        android:inputType="text"
+                        android:textColor="?attr/Titel_1"
+                        android:textColorHint="?attr/Titel_2"
+                        android:textSize="@dimen/_13sdp" />
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:id="@+id/chipScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/filterChips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="12dp" />
+                </HorizontalScrollView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp" />
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:clipToPadding="false"
+            android:paddingStart="0dp"
+            android:paddingEnd="@dimen/_12sdp"
+            android:paddingBottom="96dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <TextView
+            android:id="@+id/emptyNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="160dp"
+            android:gravity="center"
+            android:paddingHorizontal="40dp"
+            android:text="@string/no_matching_notes"
+            android:textColor="?attr/Titel_2"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="10dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:gravity="center_vertical"
+            android:padding="6dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageAddChecklist"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/bg_chip_off"
+                android:contentDescription="@string/new_checklist"
+                android:elevation="6dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_checklist"
+                android:stateListAnimator="@animator/press_scale"
+                app:tint="?attr/Titel_1" />
+
+            <ImageView
+                android:id="@+id/imageAddNoteMain"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/background_add_button"
+                android:contentDescription="@string/new_note"
+                android:elevation="6dp"
+                android:onClick="OnClick"
+                android:padding="@dimen/_9sdp"
+                android:src="@drawable/ic_add"
+                android:stateListAnimator="@animator/press_scale"
+                app:tint="@color/dark_color" />
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!-- Anchored adaptive banner is added here by AdsHelper after consent. -->
     <FrameLayout
@@ -193,6 +468,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

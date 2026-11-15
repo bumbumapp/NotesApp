@@ -118,7 +118,7 @@ public final class ReminderUi {
     }
 
     /** Asks for the optional notification permission; a denied answer is explained, never blocking. */
-    private static void ensureNotifications(Activity activity) {
+    public static void ensureNotifications(Activity activity) {
         if (NotificationManagerCompat.from(activity).areNotificationsEnabled()) {
             return;
         }
