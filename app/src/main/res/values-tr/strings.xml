@@ -96,4 +96,5 @@
     <string name="restore_failed">Bu geçerli bir yedek dosyası değil.</string>
     <string name="backup_no_picker">Bu cihazda dosya seçici yok.</string>
     <string name="notes_empty">Henüz not yok. İlkini yazmak için + düğmesine dokun.</string>
+    <string name="habit_new_short">+ Yeni</string>
 </resources>

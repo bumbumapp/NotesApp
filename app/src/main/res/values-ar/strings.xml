@@ -96,4 +96,5 @@
     <string name="restore_failed">هذا ليس ملف نسخة احتياطية صالحًا.</string>
     <string name="backup_no_picker">لا يتوفر منتقي ملفات على هذا الجهاز.</string>
     <string name="notes_empty">لا توجد ملاحظات بعد. اضغط + لكتابة أول ملاحظة.</string>
+    <string name="habit_new_short">+ جديدة</string>
 </resources>

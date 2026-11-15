@@ -96,4 +96,5 @@
     <string name="restore_failed">Este no es un archivo de copia válido.</string>
     <string name="backup_no_picker">Este dispositivo no tiene selector de archivos.</string>
     <string name="notes_empty">Aún no hay notas. Toca + para escribir la primera.</string>
+    <string name="habit_new_short">+ Nueva</string>
 </resources>

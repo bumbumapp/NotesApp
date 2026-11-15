@@ -139,7 +139,9 @@
                     android:background="?attr/selectableItemBackground"
                     android:fontFamily="@font/jakarta_bold"
                     android:gravity="center_vertical|end"
-                    android:text="@string/habit_add"
+                    android:contentDescription="@string/habit_add"
+                    android:minWidth="64dp"
+                    android:text="@string/habit_new_short"
                     android:textColor="@color/teal_200"
                     android:textSize="14sp" />
             </LinearLayout>
